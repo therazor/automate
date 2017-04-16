@@ -1,0 +1,54 @@
+#!/bin/bash
+# This installs oh-my-zsh
+
+apt-get install -y zsh
+echo installed $(zsh --version)
+
+# This will set zsh as the default for the current user, and it's all that's
+# needed for "real" ubuntu
+# It's not very useful for bash on windows, as it'll start `bash` anyway
+chsh -s $(which zsh)
+
+# ... which is why we need to "redirect" `bash` to `zsh`
+# we'll do this by patching `/home/$USER/.bashrc`
+# https://www.howtogeek.com/258518/how-to-use-zsh-or-another-shell-in-windows-10/
+# http://www.thegeekstuff.com/2014/12/patch-command-examples
+echo '--- /dev/fd/63	2017-04-13 16:21:49.563261400 +0100
++++ /dev/fd/62	2017-04-13 16:21:49.579764200 +0100
+@@ -2,6 +2,11 @@
+ # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+ # for examples
+ 
++# Launch Zsh
++if [ -t 1 ]; then
++exec zsh
++fi
++
+ # If not running interactively, don'\''t do anything
+ case $- in
+     *i*) ;;
+' | patch /home/$USER/.bashrc
+
+# (diff was generated using `diff -u <(cat original/file) <(cat final/file)`)
+
+# setup initial zsh profile
+cp -n /etc/zsh/newuser.zshrc.recommended /home/$USER/.zshrc
+
+# install oh-my-zsh
+# https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# changing theme to agnoster
+echo '--- /proc/self/fd/11    2017-04-13 17:14:54.015200900 +0100
++++ /proc/self/fd/13    2017-04-13 17:14:54.018701100 +0100
+@@ -7,7 +7,7 @@
+ # Set name of the theme to load. Optionally, if you set this to "random"
+ # it'\''ll load a random theme each time that oh-my-zsh is loaded.
+ # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+-ZSH_THEME="robbyrussell"
++ZSH_THEME="agnoster"
+
+ # Uncomment the following line to use case-sensitive completion.
+ # CASE_SENSITIVE="true"' | patch /home/$USER/.zshrc
+
+echo "All done! Get yourself a powerline compatible font if characters are looking weird"
