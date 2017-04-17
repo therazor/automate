@@ -36,6 +36,9 @@ fi
 # setup initial zsh profile
 cp -n /etc/zsh/newuser.zshrc.recommended /home/$USER/.zshrc
 
+# git is required by oh-my-zsh
+apt-get install -y git
+
 # install oh-my-zsh
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
