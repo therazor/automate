@@ -2,7 +2,7 @@
 # This installs oh-my-zsh
 
 # relies on $SUDO_USER - distros that don't expose this won't work
-$CALLING_USER=$SUDO_USER
+CALLING_USER=$SUDO_USER
 
 apt-get install -y zsh
 echo installed $(zsh --version)
