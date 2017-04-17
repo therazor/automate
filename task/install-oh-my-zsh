@@ -1,6 +1,9 @@
 #!/bin/bash
 # This installs oh-my-zsh
 
+# relies on $SUDO_USER - distros that don't expose this won't work
+$CALLING_USER=$SUDO_USER
+
 apt-get install -y zsh
 echo installed $(zsh --version)
 
@@ -23,18 +26,18 @@ if grep --quiet --ignore-case -- 'Microsoft' <(uname --kernel-release); then
     # If not running interactively, don'\''t do anything
     case $- in
         *i*) ;;
-    ' | patch /home/$USER/.bashrc
+    ' | patch /home/$CALLING_USER/.bashrc
 
     # (diff was generated using `diff -u <(cat original/file) <(cat final/file)`)
 else
     # This will set zsh as the default for the current user, and it's all that's
     # needed for "real" ubuntu
     # It's not very useful for bash on windows, as it'll start `bash` anyway
-    chsh -s $(which zsh)
+    sudo -i -u $CALLING_USER chsh -s $(which zsh)
 fi
 
 # setup initial zsh profile
-cp -n /etc/zsh/newuser.zshrc.recommended /home/$USER/.zshrc
+sudo -i -u $CALLING_USER cp -n /etc/zsh/newuser.zshrc.recommended /home/$CALLING_USER/.zshrc
 
 # git is required by oh-my-zsh
 apt-get install -y git
@@ -54,6 +57,6 @@ echo '--- /proc/self/fd/11    2017-04-13 17:14:54.015200900 +0100
 +ZSH_THEME="agnoster"
 
  # Uncomment the following line to use case-sensitive completion.
- # CASE_SENSITIVE="true"' | patch /home/$USER/.zshrc
+ # CASE_SENSITIVE="true"' | patch /home/$CALLING_USER/.zshrc
 
 echo "All done! Get yourself a powerline compatible font if characters are looking weird"
