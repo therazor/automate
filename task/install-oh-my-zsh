@@ -2,17 +2,17 @@
 # This installs oh-my-zsh
 
 WINDOWS_BASH_PATCH='@@ -2,6 +2,11 @@
-    # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-    # for examples
-    
-    +# Launch Zsh
-    +if [ -t 1 ]; then
-    +exec zsh
-    +fi
-    +
-    # If not running interactively, don'\''t do anything
-    case $- in
-        *i*) ;;
+ # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+ # for examples
+ 
++# Launch Zsh
++if [ -t 1 ]; then
++exec zsh
++fi
++
+ # If not running interactively, don'\''t do anything
+ case $- in
+     *i*) ;;
 '
 
 sudo apt-get install -y zsh
@@ -37,7 +37,7 @@ fi
 cp -n /etc/zsh/newuser.zshrc.recommended /home/$USER/.zshrc
 
 # git is required by oh-my-zsh
-sudo apt-get install -y git
+sudo apt-get install -y git curl
 
 # install oh-my-zsh
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Installing-ZSH
