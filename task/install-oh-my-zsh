@@ -14,6 +14,17 @@ WINDOWS_BASH_PATCH='@@ -2,6 +2,11 @@
  case $- in
      *i*) ;;
 '
+AGNOSTER_THEME_PATCH='@@ -7,7 +7,7 @@
+ # Set name of the theme to load. Optionally, if you set this to "random"
+ # it'\''ll load a random theme each time that oh-my-zsh is loaded.
+ # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+-ZSH_THEME="robbyrussell"
++ZSH_THEME="agnoster"
+
+ # Uncomment the following line to use case-sensitive completion.
+ # CASE_SENSITIVE="true"'
+
+# (diff was generated using `diff -u <(cat original/file) <(cat final/file)`)
 
 sudo apt-get install -y zsh
 echo installed $(zsh --version)
@@ -24,8 +35,6 @@ if grep --quiet --ignore-case -- 'Microsoft' <(uname --kernel-release); then
     # https://www.howtogeek.com/258518/how-to-use-zsh-or-another-shell-in-windows-10/
     # http://www.thegeekstuff.com/2014/12/patch-command-examples
     echo "$WINDOWS_BASH_PATCH" | patch --forward --reject-file=- /home/$USER/.bashrc
-
-    # (diff was generated using `diff -u <(cat original/file) <(cat final/file)`)
 else
     # This will set zsh as the default for the current user, and it's all that's
     # needed for "real" ubuntu
@@ -44,14 +53,6 @@ sudo apt-get install -y git curl
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 # changing theme to agnoster
-echo '@@ -7,7 +7,7 @@
- # Set name of the theme to load. Optionally, if you set this to "random"
- # it'\''ll load a random theme each time that oh-my-zsh is loaded.
- # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
--ZSH_THEME="robbyrussell"
-+ZSH_THEME="agnoster"
-
- # Uncomment the following line to use case-sensitive completion.
- # CASE_SENSITIVE="true"' | patch --forward --reject-file=- /home/$USER/.zshrc
+echo "$AGNOSTER_THEME_PATCH" | patch --forward --reject-file=- /home/$USER/.zshrc
 
 echo "All done! Get yourself a powerline compatible font if characters are looking weird"
