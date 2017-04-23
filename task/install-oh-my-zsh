@@ -23,7 +23,7 @@ if grep --quiet --ignore-case -- 'Microsoft' <(uname --kernel-release); then
     # we'll do this by patching `/home/$USER/.bashrc`
     # https://www.howtogeek.com/258518/how-to-use-zsh-or-another-shell-in-windows-10/
     # http://www.thegeekstuff.com/2014/12/patch-command-examples
-    echo "$WINDOWS_BASH_PATCH" | patch /home/$USER/.bashrc
+    echo "$WINDOWS_BASH_PATCH" | patch --forward --reject-file=- /home/$USER/.bashrc
 
     # (diff was generated using `diff -u <(cat original/file) <(cat final/file)`)
 else
@@ -52,6 +52,6 @@ echo '@@ -7,7 +7,7 @@
 +ZSH_THEME="agnoster"
 
  # Uncomment the following line to use case-sensitive completion.
- # CASE_SENSITIVE="true"' | patch /home/$USER/.zshrc
+ # CASE_SENSITIVE="true"' | patch --forward --reject-file=- /home/$USER/.zshrc
 
 echo "All done! Get yourself a powerline compatible font if characters are looking weird"
