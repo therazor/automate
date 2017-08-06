@@ -1,0 +1,12 @@
+#!/bin/bash
+# This installs oh-my-zsh
+
+sudo apt-get -qq install sysbench
+
+echo 'Single thread'
+sysbench --test=cpu --cpu-max-prime=20000 --num-threads=1 run | tail -2
+
+# thread number: https://stackoverflow.com/a/23569003/304174
+# should skip this step if only one thread is available
+echo 'All available threads'
+sysbench --test=cpu --cpu-max-prime=20000 --num-threads=$(getconf _NPROCESSORS_ONLN) run | tail -2
